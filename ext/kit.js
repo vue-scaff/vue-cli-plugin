@@ -22,6 +22,17 @@ function foreach(source, callback = () => {}) {
 }
 
 /**
+ * Assigning
+ * @param origin {object}
+ * @param target {object}
+ * ======== ======== ========
+ */
+
+function assign(origin, target) {
+	return Object.assign(origin, target);
+}
+
+/**
  * Trim
  * @param value {string}
  * ======== ======== ========
@@ -95,6 +106,7 @@ function wrapper(fn) {
 // Export
 module.exports = {
   foreach,
+	assign,
 	trim,
   check,
   deep,

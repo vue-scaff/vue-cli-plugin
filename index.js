@@ -18,13 +18,13 @@ const { path, fs, root } = inf;
 const { argvs } = command;
 
 // Use Presence
-const { resolve, presence } = concert;
+const { resolve } = concert;
 
 // Use Preset
 const { rc, injection } = preset;
 
 // Use Kit
-const { foreach, check, deep, toStringify, wrapper } = kit;
+const { assign, toStringify } = kit;
 
 // Use Utils
 const {
@@ -38,9 +38,20 @@ const {
 } = require("@vue/cli-shared-utils");
 
 // Argvs overwrite NODE_ENV must before at Vue
+process.env.NODE_ENV = "production";
+
+// Coverage
 if (argvs.mode) {
   process.env.NODE_ENV = argvs.mode;
 }
+
+// Matching
+matching(injection, {
+  NODE_ENV: process.env.NODE_ENV
+});
+
+// Assigning Injection to `process.env` before aVue Life
+assign(process.env, injection);
 
 // Prevent Accident
 merge(rc.extract);
@@ -48,7 +59,7 @@ merge(rc.extract);
 // into Vue Cli Lifecycle
 module.exports = (api, options, rootOptions) => {
   // Merge User Config 2 Project Options
-  Object.assign(api.service.projectOptions, rc);
+  assign(api.service.projectOptions, rc);
 
   // Chain Webpack
   api.chainWebpack(webpackConfig => {
@@ -58,12 +69,7 @@ module.exports = (api, options, rootOptions) => {
     // Set Context Alias
     alias(webpackConfig.resolve.alias, rc.extract);
 
-    // Matching
-		matching(injection, {
-			NODE_ENV: process.env.NODE_ENV
-		});
-
-    // Argvs + Injection
+    // Argvs + Injection + Rc
     let parameter = toStringify({
       ...argvs,
       ...injection,
@@ -74,8 +80,8 @@ module.exports = (api, options, rootOptions) => {
     webpackConfig.plugin("define").tap(
       // Definitions
       definitions => {
-        // Extension
-        Object.assign(definitions[0]["process.env"], parameter);
+        // Extension in Vue Life
+        assign(definitions[0]["process.env"], parameter);
         // Return
         return definitions;
       }
