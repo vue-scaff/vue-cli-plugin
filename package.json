@@ -1,6 +1,6 @@
 {
   "name": "vue-cli-plugin-scaff",
-  "version": "5.1.0",
+  "version": "5.1.1",
   "description": "plugin for `vue-cli-scaff`",
   "main": "index.js",
   "dependencies": {

@@ -5,6 +5,7 @@ const preset = require("./preset");
 const defer = require("./defer");
 const merge = require("./merge");
 const alias = require("./alias");
+const matching = require("./matching");
 const kit = require("./kit");
 
 module.exports = {
@@ -15,5 +16,6 @@ module.exports = {
   defer,
 	merge,
   alias,
+	matching,
   kit,
 };

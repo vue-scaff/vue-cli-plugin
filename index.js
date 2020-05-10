@@ -1,5 +1,15 @@
 // Use Pretty World
-const { inf, command, concert, preset, defer, merge, alias, kit } = require("./ext");
+const {
+  inf,
+  command,
+  concert,
+  preset,
+  defer,
+  merge,
+  alias,
+  matching,
+  kit
+} = require("./ext");
 
 // Use Root
 const { path, fs, root } = inf;
@@ -24,7 +34,7 @@ const {
   warn,
   error,
   clearConsole,
-  exit,
+  exit
 } = require("@vue/cli-shared-utils");
 
 // Argvs overwrite NODE_ENV must before at Vue
@@ -41,24 +51,29 @@ module.exports = (api, options, rootOptions) => {
   Object.assign(api.service.projectOptions, rc);
 
   // Chain Webpack
-  api.chainWebpack((webpackConfig) => {
+  api.chainWebpack(webpackConfig => {
     // Set Defer in Vue
     defer(argvs);
 
     // Set Context Alias
     alias(webpackConfig.resolve.alias, rc.extract);
 
+    // Matching
+		matching(injection, {
+			NODE_ENV: process.env.NODE_ENV
+		});
+
     // Argvs + Injection
     let parameter = toStringify({
       ...argvs,
       ...injection,
-			rc
+      rc
     });
 
     // Injection
     webpackConfig.plugin("define").tap(
       // Definitions
-      (definitions) => {
+      definitions => {
         // Extension
         Object.assign(definitions[0]["process.env"], parameter);
         // Return

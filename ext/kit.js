@@ -22,6 +22,15 @@ function foreach(source, callback = () => {}) {
 }
 
 /**
+ * Trim
+ * @param value {string}
+ * ======== ======== ========
+ */
+function trim(value) {
+  return value.replace(/^\s+|\s+$/g, "");
+}
+
+/**
  * Check
  * @param value {any}
  * @param mode {any}
@@ -86,6 +95,7 @@ function wrapper(fn) {
 // Export
 module.exports = {
   foreach,
+	trim,
   check,
   deep,
   toStringify,
