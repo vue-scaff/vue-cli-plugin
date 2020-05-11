@@ -1,4 +1,4 @@
-// Use Deep
+// Use Kit
 const { deep, foreach, trim } = require("./kit");
 
 /**
@@ -37,4 +37,5 @@ function matching(template, matcher) {
   });
 }
 
+// Export
 module.exports = matching;

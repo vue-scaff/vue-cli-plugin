@@ -28,8 +28,18 @@ function foreach(source, callback = () => {}) {
  * ======== ======== ========
  */
 
-function assign(origin, target) {
-	return Object.assign(origin, target);
+function assign(origin, target, reserve) {
+  // Reserve
+  if (reserve) {
+    origin[reserve] = target;
+  }
+  // Merge
+  else {
+    Object.assign(origin, target);
+  }
+
+  // Return
+  return origin;
 }
 
 /**
@@ -106,8 +116,8 @@ function wrapper(fn) {
 // Export
 module.exports = {
   foreach,
-	assign,
-	trim,
+  assign,
+  trim,
   check,
   deep,
   toStringify,

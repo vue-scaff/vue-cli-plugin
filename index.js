@@ -1,3 +1,14 @@
+// Use Share Utils
+const {
+  log,
+  info,
+  done,
+  warn,
+  error,
+  clearConsole,
+  exit,
+} = require("@vue/cli-shared-utils");
+
 // Use Pretty World
 const {
   inf,
@@ -8,7 +19,7 @@ const {
   merge,
   alias,
   matching,
-  kit
+  kit,
 } = require("./ext");
 
 // Use Root
@@ -26,17 +37,6 @@ const { rc, injection } = preset;
 // Use Kit
 const { assign, toStringify } = kit;
 
-// Use Utils
-const {
-  log,
-  info,
-  done,
-  warn,
-  error,
-  clearConsole,
-  exit
-} = require("@vue/cli-shared-utils");
-
 // Argvs overwrite NODE_ENV must before at Vue
 process.env.NODE_ENV = "production";
 
@@ -47,11 +47,11 @@ if (argvs.mode) {
 
 // Matching
 matching(injection, {
-  NODE_ENV: process.env.NODE_ENV
+  NODE_ENV: process.env.NODE_ENV,
 });
 
-// Assigning Injection to `process.env` before aVue Life
-assign(process.env, injection);
+// Assigning Injection to `process` before aVue Life
+assign(process, injection, "injection");
 
 // Prevent Accident
 merge(rc.extract);
@@ -62,7 +62,7 @@ module.exports = (api, options, rootOptions) => {
   assign(api.service.projectOptions, rc);
 
   // Chain Webpack
-  api.chainWebpack(webpackConfig => {
+  api.chainWebpack((webpackConfig) => {
     // Set Defer in Vue
     defer(argvs);
 
@@ -73,13 +73,13 @@ module.exports = (api, options, rootOptions) => {
     let parameter = toStringify({
       ...argvs,
       ...injection,
-      rc
+      rc,
     });
 
     // Injection
     webpackConfig.plugin("define").tap(
       // Definitions
-      definitions => {
+      (definitions) => {
         // Extension in Vue Life
         assign(definitions[0]["process.env"], parameter);
         // Return
