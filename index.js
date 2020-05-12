@@ -1,14 +1,3 @@
-// Use Share Utils
-const {
-  log,
-  info,
-  done,
-  warn,
-  error,
-  clearConsole,
-  exit,
-} = require("@vue/cli-shared-utils");
-
 // Use Pretty World
 const {
   inf,
@@ -21,6 +10,17 @@ const {
   matching,
   kit,
 } = require("./ext");
+
+// Use Share Utils
+const {
+  log,
+  info,
+  done,
+  warn,
+  error,
+  clearConsole,
+  exit,
+} = require("@vue/cli-shared-utils");
 
 // Use Root
 const { path, fs, root } = inf;
