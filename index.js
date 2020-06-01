@@ -1,3 +1,14 @@
+// Use Share Utils
+const {
+  log,
+  info,
+  done,
+  warn,
+  error,
+  clearConsole,
+  exit
+} = require("@vue/cli-shared-utils");
+
 // Use Pretty World
 const {
   inf,
@@ -8,22 +19,11 @@ const {
   merge,
   alias,
   matching,
-  kit,
+  kit
 } = require("./ext");
 
-// Use Share Utils
-const {
-  log,
-  info,
-  done,
-  warn,
-  error,
-  clearConsole,
-  exit,
-} = require("@vue/cli-shared-utils");
-
 // Use Root
-const { path, fs, root } = inf;
+const { path, fs, root, main } = inf;
 
 // Use Argvs
 const { argvs } = command;
@@ -47,7 +47,7 @@ if (argvs.mode) {
 
 // Matching
 matching(injection, {
-  NODE_ENV: process.env.NODE_ENV,
+  NODE_ENV: process.env.NODE_ENV
 });
 
 // Assigning Injection to `process` before aVue Life
@@ -61,8 +61,14 @@ module.exports = (api, options, rootOptions) => {
   // Merge User Config 2 Project Options
   assign(api.service.projectOptions, rc);
 
+  // Configure Webpack
+  api.configureWebpack(webpackConfig => {
+    // Set Entry in `@scaff/vue-cli-scaff`
+    webpackConfig.entry.app = main;
+  });
+
   // Chain Webpack
-  api.chainWebpack((webpackConfig) => {
+  api.chainWebpack(webpackConfig => {
     // Set Defer in Vue
     defer(argvs);
 
@@ -73,13 +79,13 @@ module.exports = (api, options, rootOptions) => {
     let parameter = toStringify({
       ...argvs,
       ...injection,
-      rc,
+      rc
     });
 
     // Injection
     webpackConfig.plugin("define").tap(
       // Definitions
-      (definitions) => {
+      definitions => {
         // Extension in Vue Life
         assign(definitions[0]["process.env"], parameter);
         // Return
