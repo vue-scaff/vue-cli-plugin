@@ -16,6 +16,10 @@ const preset = {
     context: `@/components`,
     suffix: /.vue$/
   },
+  filter: {
+    context: `@/filters`,
+    suffix: /.js$/
+  },
   style: {
     context: `@/sheet`,
     suffix: /variables.scss$/
