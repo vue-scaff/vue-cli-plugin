@@ -113,6 +113,22 @@ function wrapper(fn) {
   return `"${fn(process.env)}"`;
 }
 
+/**
+ * Tolerance
+ * @param target {any}
+ * @param condition {type}
+ * ======== ======== ========
+ */
+function tolerance(origin, condition, target) {
+  if (condition === undefined) {
+    return (origin = target), origin;
+  }
+
+  if (typeof origin !== condition) {
+    return (origin = target), origin;
+  }
+}
+
 // Export
 module.exports = {
   foreach,
@@ -121,5 +137,6 @@ module.exports = {
   check,
   deep,
   toStringify,
-  wrapper
+  wrapper,
+  tolerance
 };

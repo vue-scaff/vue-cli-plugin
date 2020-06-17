@@ -18,8 +18,10 @@ const {
   defer,
   merge,
   alias,
+  rem,
   matching,
-  kit
+  kit,
+  mock
 } = require("./ext");
 
 // Use Root
@@ -35,7 +37,7 @@ const { resolve } = concert;
 const { rc, injection } = preset;
 
 // Use Kit
-const { assign, toStringify } = kit;
+const { assign, toStringify, tolerance } = kit;
 
 // Argvs overwrite NODE_ENV must before at Vue
 process.env.NODE_ENV = "production";
@@ -60,6 +62,33 @@ merge(rc.extract);
 module.exports = (api, options, rootOptions) => {
   // Merge User Config 2 Project Options
   assign(api.service.projectOptions, rc);
+
+  // Set Mock Server
+  if (rc.mock === true) {
+    options.devServer.before = mock;
+  }
+
+  // Set px2rem
+  if (rc.px2rem) {
+    // Tolerance - 1
+    options.css.loaderOptions.postcss = tolerance(
+      options.css.loaderOptions.postcss,
+      undefined,
+      {}
+    );
+
+    // Tolerance - 2
+    options.css.loaderOptions.postcss.plugins = tolerance(
+      options.css.loaderOptions.postcss.plugins,
+      undefined,
+      []
+    );
+
+    options.css.loaderOptions.postcss.plugins = [
+      ...options.css.loaderOptions.postcss.plugins,
+      rem({ rootValue: rc.px2rem })
+    ];
+  }
 
   // Configure Webpack
   api.configureWebpack(webpackConfig => {
