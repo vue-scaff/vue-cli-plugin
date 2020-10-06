@@ -20,6 +20,10 @@ const preset = {
     context: `@/filters`,
     suffix: /.js$/
   },
+  directive: {
+    context: `@/directives`,
+    suffix: /.js$/
+  },
   style: {
     context: `@/sheet`,
     suffix: /variables.scss$/

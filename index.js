@@ -104,6 +104,9 @@ module.exports = (api, options, rootOptions) => {
     // Set Context Alias
     alias(webpackConfig.resolve.alias, rc.extract);
 
+    // Set Projects Path -- Demise # for Other Proj
+    webpackConfig.resolve.alias.store.set(`#projects`, `${root}/projects`);
+
     // Argvs + Injection + Rc
     let parameter = toStringify({
       ...argvs,
